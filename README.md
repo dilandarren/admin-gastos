@@ -1,4 +1,4 @@
-# 
+# Admin Gastos
 
 ## Project Vue + Vite
 

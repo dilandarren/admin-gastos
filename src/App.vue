@@ -19,6 +19,7 @@
     id: null,
     fecha: Date.now()
   });
+  const gastos = ref([]);
 
   const definirPresupuesto = (cantidad) => {
     presupuesto.value = cantidad
@@ -40,6 +41,13 @@
       modal.mostrar = false;
     }, 300);
     
+  }
+  
+  const guardarGasto = () => {
+    gastos.value.push({
+      ...gasto,
+      id: 123
+    })
   }
 
 </script>
@@ -84,6 +92,7 @@
         v-model:nombre="gasto.nombre"
         v-model:cantidad="gasto.cantidad"
         v-model:categoria="gasto.categoria"
+        @guardar-gasto="guardarGasto"
       /> 
     </main>
   </div>
