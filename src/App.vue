@@ -4,6 +4,7 @@
   import ControlPresupuesto from './components/ControlPresupuesto.vue';
   import Modal from './components/Modal.vue';
   import iconoNuevoGasto from './assets/img/nuevo-gasto.svg'
+  import { generarId } from './helpers'
 
   const modal = reactive({
     mostrar: false,
@@ -43,10 +44,13 @@
     
   }
   
+
   const guardarGasto = () => {
+    console.log('desde app');
     gastos.value.push({
       ...gasto,
-      id: 123
+      id: generarId(),
+      
     })
   }
 
