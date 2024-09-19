@@ -5,6 +5,7 @@
   import Modal from './components/Modal.vue';
   import iconoNuevoGasto from './assets/img/nuevo-gasto.svg'
   import { generarId } from './helpers'
+  import Gasto from './components/Gasto.vue';
 
   const modal = reactive({
     mostrar: false,
@@ -52,6 +53,19 @@
       id: generarId(),
       
     })
+
+
+
+    ocultarModal()
+
+    //Reiniciar el Objeto
+    Object.assign(gasto, {
+      nombre: '',
+      cantidad: '',
+      categoria: '',
+      id: null,
+      fecha: Date.now()
+    })
   }
 
 </script>
@@ -77,6 +91,18 @@
     </header>
 
     <main v-if="presupuesto > 0">
+
+
+        <div class="listado-gastos contenedor">
+          <h2>{{ gastos.length > 0 ? 'Gastos' : 'No hay gastos' }}</h2>
+
+
+          <Gasto 
+            v-for="gasto in gastos"
+            :key="gasto.id"
+            :gasto="gasto"
+          />
+        </div>
 
 
 
@@ -168,6 +194,16 @@
     cursor: pointer;
   }
   
+
+
+  .listado-gastos{
+    margin-top: 10rem;
+  } 
+
+  .listado-gastos h2{
+    font-weight: 900;
+    color: var(--gris-oscuro);
+  } 
 
 
 </style>
