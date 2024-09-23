@@ -26,7 +26,7 @@
 
             <p>
                 <span>Gastado:</span>
-                {{ formatearCantidad(0) }}
+                {{ formatearCantidad(gastado) }}
             </p>
 
 
@@ -40,7 +40,10 @@
 <script setup>
     import imagen from '../assets/img/grafico.jpg'
     import { formatearCantidad } from '../helpers'
+import Gasto from './Gasto.vue';
 
+    
+    
     const props = defineProps({
         presupuesto: {
             type: Number,
@@ -50,6 +53,10 @@
             type: Number,
             required: true
         },
+        gastado: {
+            type: Number,
+            required: true
+        }
 
     })
 </script>

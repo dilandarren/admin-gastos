@@ -1,6 +1,6 @@
 <script setup>
   import Presupuesto from './components/Presupuesto.vue';
-  import { ref, reactive } from 'vue';
+  import { ref, reactive, watch } from 'vue';
   import ControlPresupuesto from './components/ControlPresupuesto.vue';
   import Modal from './components/Modal.vue';
   import iconoNuevoGasto from './assets/img/nuevo-gasto.svg'
@@ -13,15 +13,26 @@
   })
   const presupuesto = ref(0)
   const disponible = ref(0)
+  const gastado = ref(0)
 
   const gasto = reactive({
-    nombre: '',
-    cantidad: '',
-    categoria: '',
+    nombre: 'Netflix',
+    cantidad: 50,
+    categoria: 'suscripciones',
     id: null,
     fecha: Date.now()
   });
   const gastos = ref([]);
+
+  watch(gastos, () => {
+    const totalGastado = gastos.value.reduce((total, gasto) => gasto.cantidad + total, 0)
+    gastado.value = totalGastado
+
+    disponible.value = presupuesto.value - totalGastado
+    
+  }, {
+    deep: true
+  })
 
   const definirPresupuesto = (cantidad) => {
     presupuesto.value = cantidad
@@ -71,7 +82,9 @@
 </script>
 
 <template>
-  <div>
+  <div
+    :class="{fijar: modal.mostrar}"
+  >
     <header>
       <h1>Planificador de Gastos</h1>
 
@@ -84,6 +97,7 @@
           v-else
           :presupuesto="presupuesto"
           :disponible="disponible"
+          :gastado="gastado"
         />
         
       </div>
@@ -157,6 +171,10 @@
   }
   h2{
     font-size: 3rem;
+  }
+  .fijar{
+    overflow: hidden;
+    height: 100vh;
   }
   header{
     background-color: var(--azul);

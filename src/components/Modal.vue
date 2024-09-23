@@ -45,7 +45,7 @@
 
 
                 <div class="campo">
-                    <label for="nombre">Categoría::</label>
+                    <label for="nombre">Categoría:</label>
                     <select 
                         id="categoria"
                         :value="categoria"
@@ -58,7 +58,7 @@
                         <option value="gastos">Gastos Varios</option>
                         <option value="ocio">Ocio</option>
                         <option value="salud">Salud</option>
-                        <option value="subscripciones">Subscripciones</option>
+                        <option value="suscripciones">Suscripciones</option>
                         <option value=""></option>
                     </select>
 
