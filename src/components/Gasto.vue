@@ -8,7 +8,11 @@
             >
             <div class="detalles">
                 <p class="categoria">{{ gasto.categoria }}</p>
-                <p class="nombre"> {{ gasto.nombre }} </p>
+                <p 
+                    class="nombre"
+                    @click.prevent="$emit('seleccionar-gasto', gasto.id)"
+                > 
+                    {{ gasto.nombre }} </p>
 
                 <p class="fecha">
                     Fecha
@@ -42,13 +46,15 @@
         suscripciones : IconoSuscripciones
     }
 
+    
     const props = defineProps({
         gasto: {
             type: Object,
             required: true
         }
     })
-
+    
+    defineEmits(['seleccionar-gasto'])
 
 </script>
 
