@@ -34,6 +34,15 @@
     deep: true
   })
 
+  watch(modal, () => {
+    if (!modal.mostrar) {
+      //TODO
+      reiniciarStateGasto()
+    }
+  }, {
+    deep: true
+  })
+
   const definirPresupuesto = (cantidad) => {
     presupuesto.value = cantidad
     disponible.value = cantidad
@@ -58,18 +67,34 @@
   
 
   const guardarGasto = () => {
-    console.log('desde app');
-    gastos.value.push({
+    if (gasto.id) {
+
+      
+      
+      //editando
+      const { id } = gasto
+      console.log(id);
+      const i = gastos.value.findIndex((gasto => gasto.id === id))
+      gastos.value[i] = {...gasto} 
+    } else{
+
+      
+      //registro nuevo
+      gastos.value.push({
       ...gasto,
       id: generarId(),
       
     })
 
-
+    
+    }
 
     ocultarModal()
+    reiniciarStateGasto();
 
-    //Reiniciar el Objeto
+  }
+
+  const reiniciarStateGasto = () => {
     Object.assign(gasto, {
       nombre: '',
       cantidad: '',
@@ -143,6 +168,7 @@
         @ocultar-modal="ocultarModal"
         :modal="modal"
         :disponible="disponible"
+        :id="gasto.id"
         v-model:nombre="gasto.nombre"
         v-model:cantidad="gasto.cantidad"
         v-model:categoria="gasto.categoria"

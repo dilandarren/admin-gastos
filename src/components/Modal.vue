@@ -89,7 +89,7 @@ const emit = defineEmits(['ocultar-modal', 'update:nombre', 'update:cantidad', '
 
 const props = defineProps({
     modal:{
-        type:Object,
+        type: Object,
         required: true
     },
     nombre:{
@@ -97,7 +97,7 @@ const props = defineProps({
         required: true,
     },
     cantidad:{
-        type:[String, Number],
+        type: [String, Number],
         required: true,
     },
     categoria:{
@@ -107,14 +107,23 @@ const props = defineProps({
     disponible:{
         type: Number,
         required: true
+    },
+    id: {
+        type: [String, null],
+        required: true
     }
-    
-    
+ 
 })
 
+const old = props.cantidad
+
+
+
 const agregarGasto = () => {
+
+    
     //Validar los campos
-    const { nombre, cantidad, categoria, disponible} = props
+    const { nombre, cantidad, categoria, disponible, id} = props
     if ([nombre, cantidad, categoria].includes('')) {
         error.value = 'Todos los campos son obligatorios'
 
@@ -123,6 +132,8 @@ const agregarGasto = () => {
         }, 3000);
         return
     }
+
+    
 
 
     //Validar la cantidad
@@ -138,14 +149,27 @@ const agregarGasto = () => {
 
 
     //Validar
-
-    if (cantidad > disponible) {
+    if (id) {
+        if (cantidad > old + disponible) {
+            error.value = 'Has exedido el Presupuesto'
+            setTimeout(() => {
+                error.value = ''
+            }, 3000);
+            return
+        }
+    } else{
+        if (cantidad > disponible) {
         error.value = 'Has exedido el Presupuesto'
         setTimeout(() => {
             error.value = ''
         }, 3000);
         return
     }
+    }
+
+    
+
+    
 
     emit('guardar-gasto')
 
