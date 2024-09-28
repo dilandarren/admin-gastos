@@ -17,7 +17,7 @@
                 class="nuevo-gasto"
                 @submit.prevent="agregarGasto"
             >
-                <legend>Añadir Gasto</legend>
+                <legend>{{ isEditing ? 'Guardar Canvios' : 'Añadir Gasto' }}</legend>
 
                 <Alerta v-if="error">{{ error }}</Alerta>
 
@@ -45,7 +45,7 @@
 
 
                 <div class="campo">
-                    <label for="nombre">Categoría:</label>
+                    <label for="categoria">Categoría:</label>
                     <select 
                         id="categoria"
                         :value="categoria"
@@ -66,7 +66,7 @@
 
                 <input 
                     type="submit"
-                    value="Añadir Gasto"
+                    :value="[id ? 'Guardar Canvios' : 'Añadir Gasto']"
                 
                 >
 
@@ -74,18 +74,34 @@
 
             </form>
 
+            <button
+                type="button"
+                class="btn-eliminar"
+                v-if="isEditing"
+                @click.prevent="$emit('eliminar-gasto') "
+            >
+            Eliminar Gasto
+            </button>
+
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import Alerta from'./Alerta.vue';
 import cerrarModal from '../assets/img/cerrar.svg'
 
 const error = ref('');
 
-const emit = defineEmits(['ocultar-modal', 'update:nombre', 'update:cantidad', 'update:categoria', 'guardar-gasto'])
+const emit = defineEmits([
+    'ocultar-modal', 
+    'update:nombre', 
+    'update:cantidad', 
+    'update:categoria', 
+    'guardar-gasto', 
+    'eliminar-gasto'
+])
 
 const props = defineProps({
     modal:{
@@ -167,16 +183,12 @@ const agregarGasto = () => {
     }
     }
 
-    
-
-    
-
     emit('guardar-gasto')
-
-
-
-
 }
+
+const isEditing = computed(() => {
+    return props.id
+})
 
 </script>
 
@@ -256,6 +268,18 @@ const agregarGasto = () => {
         background-color: var(--azul);
         color: var(--blanco);
         font-weight: 700;
+        cursor: pointer;
+    }
+
+    .btn-eliminar {
+        border: none;
+        padding: 1rem;
+        width: 100%;
+        background-color: #ef4444;
+        font-weight: 700;
+        font-size: 1.2rem;
+        color: var(--blanco);
+        margin-top: 10rem;
         cursor: pointer;
     }
 
