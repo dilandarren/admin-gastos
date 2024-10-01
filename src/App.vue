@@ -7,6 +7,7 @@
   import iconoNuevoGasto from './assets/img/nuevo-gasto.svg'
   import { generarId } from './helpers'
   import Gasto from './components/Gasto.vue';
+import { onMounted } from 'vue';
 
   const modal = reactive({
     mostrar: false,
@@ -29,8 +30,9 @@
   watch(gastos, () => {
     const totalGastado = gastos.value.reduce((total, gasto) => gasto.cantidad + total, 0)
     gastado.value = totalGastado
-
     disponible.value = presupuesto.value - totalGastado
+
+    localStorage.setItem('gastos', JSON.stringify(gastos.value))
     
   }, {
     deep: true
@@ -127,6 +129,26 @@
     return gastos.value
   })
 
+  onMounted(() => {
+    const presupuestoStorage = localStorage.getItem('presupuesto')
+    if (presupuestoStorage) {
+      presupuesto.value = Number(presupuestoStorage);
+      disponible.value = Number(presupuestoStorage)
+    }
+
+    const gastoStorage = localStorage.getItem('gastos')
+    if (gastoStorage) {
+      gastos.value = JSON.parse(gastoStorage);
+    }
+  })
+
+
+  const resetApp = () => {
+    if (confirm('¿Deseas reiniciar presupuesto y gastos?')) {
+      gastos.value = []
+      presupuesto.value = 0
+    }
+  }
 
 
 </script>
@@ -148,6 +170,7 @@
           :presupuesto="presupuesto"
           :disponible="disponible"
           :gastado="gastado"
+          @reset-app="resetApp"
         />
         
       </div>
